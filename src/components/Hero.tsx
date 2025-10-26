@@ -1,29 +1,27 @@
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import backgroundImage from "../assets/images/background.png";
+import { CountUp } from "./CountUp";
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center bg-black">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1642522029691-029b5a432954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMG1lZXRpbmclMjBjb3Jwb3JhdGV8ZW58MXx8fHwxNzYxMzg2OTIyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-          alt="Business meeting"
-          className="w-full h-full object-cover opacity-40"
-        />
+        <img src={backgroundImage} alt="Business meeting" className="w-full h-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-30">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-block px-8 py-3 border border-white/30 mb-8 rounded-none">
             <span className="text-white/90 tracking-[0.25em] uppercase text-xs">Soluciones Financieras de Élite</span>
           </div>
           
           <h1 className="text-white mb-8 tracking-wider text-5xl md:text-6xl lg:text-7xl">
-            Inversiones Estratégicas para el Crecimiento Sostenible
+            Inversiones Estratégicas para tu crecimiento
           </h1>
           
           <p className="text-xl md:text-2xl text-white/70 mb-12 leading-relaxed max-w-3xl mx-auto">
@@ -34,15 +32,15 @@ export function Hero() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border border-white text-white hover:bg-white hover:text-black px-12 py-7 tracking-[0.25em] text-xs transition-all duration-500 rounded-none"
+              className="group border border-white text-black hover:bg-white/10 hover:border-white hover:text-white btn-hover-shine btn-icon-white-hover px-12 py-7 tracking-[0.25em] text-xs transition-all duration-300 rounded-none transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               AGENDAR CONSULTA
-              <ArrowRight className="ml-3 h-4 w-4" />
+              <ArrowRight className="ml-3 h-4 w-4 text-black transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="border border-white/40 text-white hover:bg-white/10 hover:border-white px-12 py-7 tracking-[0.25em] text-xs transition-all duration-500 rounded-none"
+              className="border border-white/40 text-black hover:bg-white/10 hover:border-white hover:text-white hover-gradient-soft btn-icon-white-hover px-12 py-7 tracking-[0.25em] text-xs transition-all duration-300 rounded-none transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               EXPLORAR SERVICIOS
             </Button>
@@ -51,15 +49,15 @@ export function Hero() {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24 pt-12 border-t border-white/20 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="text-5xl text-white mb-3 tracking-tight">$2.5B+</div>
+              <CountUp to={2.5} decimals={1} suffix="B+" className="text-5xl text-white mb-3 tracking-tight" />
               <div className="text-white/60 tracking-[0.2em] uppercase text-xs">Activos Gestionados</div>
             </div>
             <div className="text-center">
-              <div className="text-5xl text-white mb-3 tracking-tight">150+</div>
+              <CountUp to={150} suffix="+" className="text-5xl text-white mb-3 tracking-tight" />
               <div className="text-white/60 tracking-[0.2em] uppercase text-xs">Clientes Institucionales</div>
             </div>
             <div className="text-center">
-              <div className="text-5xl text-white mb-3 tracking-tight">25+</div>
+              <CountUp to={25} suffix="+" className="text-5xl text-white mb-3 tracking-tight" />
               <div className="text-white/60 tracking-[0.2em] uppercase text-xs">Años de Experiencia</div>
             </div>
           </div>

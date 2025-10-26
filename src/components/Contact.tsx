@@ -105,10 +105,10 @@ export function Contact() {
                     <SelectValue placeholder="Seleccione una opción" />
                   </SelectTrigger>
                   <SelectContent className="bg-black border-white/20">
-                    <SelectItem value="funds">Fondos de Inversión</SelectItem>
-                    <SelectItem value="deals">Tratos Comerciales</SelectItem>
-                    <SelectItem value="wealth">Gestión Patrimonial</SelectItem>
-                    <SelectItem value="due-diligence">Due Diligence</SelectItem>
+                    <SelectItem style={{ color: 'white' }} value="funds">Fondos de Inversión</SelectItem>
+                    <SelectItem style={{ color: 'white' }} value="deals">Tratos Comerciales</SelectItem>
+                    <SelectItem style={{ color: 'white' }} value="wealth">Gestión Patrimonial</SelectItem>
+                    <SelectItem style={{ color: 'white' }} value="due-diligence">Due Diligence</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -124,7 +124,7 @@ export function Contact() {
 
               <Button 
                 variant="outline"
-                className="w-full border border-white text-white hover:bg-white hover:text-black tracking-[0.25em] py-7 transition-all duration-500 rounded-none" 
+                className="w-full border border-white text-black hover:bg-white/10 hover:border-white hover:text-white tracking-[0.25em] py-7 transition-all duration-500 rounded-none" 
                 size="lg"
               >
                 ENVIAR SOLICITUD

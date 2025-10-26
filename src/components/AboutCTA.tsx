@@ -15,18 +15,20 @@ export function AboutCTA() {
             de inversión institucional.
           </p>
           <div className="flex flex-wrap gap-6 justify-center">
-            <Button 
-              variant="outline"
-              className="border border-white text-white hover:bg-white hover:text-black px-12 py-7 tracking-[0.25em] text-xs transition-all duration-500 rounded-none"
+          <Button 
+              size="lg" 
+              variant="outline" 
+              className="group border border-white text-black hover:bg-white/10 hover:border-white hover:text-white btn-hover-shine btn-icon-white-hover px-12 py-7 tracking-[0.25em] text-xs transition-all duration-300 rounded-none transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               AGENDAR CONSULTA
-              <ArrowRight className="ml-3 h-4 w-4" />
+              <ArrowRight className="ml-3 h-4 w-4 text-black transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
             <Button 
-              variant="outline"
-              className="border border-white/40 text-white hover:bg-white/10 hover:border-white px-12 py-7 tracking-[0.25em] text-xs transition-all duration-500 rounded-none"
+              size="lg" 
+              variant="outline" 
+              className="border border-white/40 text-black hover:bg-white/10 hover:border-white hover:text-white hover-gradient-soft btn-icon-white-hover px-12 py-7 tracking-[0.25em] text-xs transition-all duration-300 rounded-none transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
-              VER CASOS DE ÉXITO
+              EXPLORAR SERVICIOS
             </Button>
           </div>
         </div>

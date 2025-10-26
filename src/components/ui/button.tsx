@@ -13,7 +13,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border bg-background text-foreground hover-gradient-soft hover:text-white hover:border-white btn-icon-white-hover dark:bg-input/30 dark:border-input",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
@@ -46,11 +46,45 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button";
 
+  const { onPointerDown, ...restProps } = props as {
+    onPointerDown?: React.PointerEventHandler<HTMLElement>;
+  } & Record<string, unknown>;
+
+  const handlePointerDown: React.PointerEventHandler<HTMLElement> = (event) => {
+    // Call user handler first
+    if (onPointerDown) onPointerDown(event);
+    if (event.defaultPrevented) return;
+
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    const diameter = Math.max(rect.width, rect.height) * 2.4;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const isLightVariant = variant === "outline" || variant === "ghost" || variant === "link";
+    const rippleColor = isLightVariant ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.35)";
+
+    const ripple = document.createElement("span");
+    ripple.className = "ripple-element";
+    ripple.style.width = `${diameter}px`;
+    ripple.style.height = `${diameter}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    ripple.style.background = rippleColor;
+
+    target.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove());
+  };
+
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      className={cn(
+        buttonVariants({ variant, size, className }),
+        "relative overflow-hidden select-none",
+      )}
+      onPointerDown={handlePointerDown}
+      {...(restProps as any)}
     />
   );
 }

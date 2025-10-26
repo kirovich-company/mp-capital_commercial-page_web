@@ -419,6 +419,78 @@
 }
 
 @layer utilities {
+  /* Reveal on scroll animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 600ms var(--default-transition-timing-function), transform 600ms var(--default-transition-timing-function);
+    will-change: opacity, transform;
+  }
+  .reveal-left { transform: translateX(-16px); }
+  .reveal-right { transform: translateX(16px); }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  .ripple-element {
+    position: absolute;
+    border-radius: 9999px;
+    transform: translate(-50%, -50%);
+    animation: ripple-anim 850ms ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-anim {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: .45; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+  }
+
+  /* Subtle background gradients for buttons */
+  .hover-gradient-strong:hover,
+  .hover-gradient-strong:focus-visible {
+    background-image: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 100%);
+    background-size: 100% 100%;
+  }
+
+  .hover-gradient-soft:hover,
+  .hover-gradient-soft:focus-visible {
+    background-image: linear-gradient(90deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
+    background-size: 100% 100%;
+  }
+
+  /* Force nested svg to white on hover for buttons that opt-in */
+  .btn-icon-white-hover:hover svg {
+    color: var(--color-white) !important;
+  }
+
+  /* Fun hover shine sweep for CTA buttons */
+  .btn-hover-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-hover-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 -150%;
+    width: 120%;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.0) 35%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(255, 255, 255, 0.0) 65%,
+      transparent 100%
+    );
+    transform: skewX(-20deg);
+    pointer-events: none;
+  }
+  .btn-hover-shine:hover::after,
+  .btn-hover-shine:focus-visible::after {
+    animation: shine-sweep 900ms ease-out;
+  }
+  @keyframes shine-sweep {
+    to { left: 150%; }
+  }
   .pointer-events-none {
     pointer-events: none;
   }
@@ -532,6 +604,11 @@
   .mt-24 {
     margin-top: calc(var(--spacing) * 24);
   }
+
+  .mt-30 {
+    margin-top: calc(var(--spacing) * 30);
+  }
+
 
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);

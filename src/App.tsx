@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
 import { Investment } from "./components/Investment";
 import { Contact } from "./components/Contact";
+import { Reveal } from "./components/Reveal";
 import { Footer } from "./components/Footer";
 import About from "./pages/About";
 
@@ -19,9 +20,15 @@ export default function App() {
       <Navbar onNavigate={setCurrentPage} />
       <main>
         <Hero />
-        <Services />
-        <Investment />
-        <Contact />
+        <Reveal>
+          <Services />
+        </Reveal>
+        <Reveal>
+          <Investment />
+        </Reveal>
+        <Reveal>
+          <Contact />
+        </Reveal>
       </main>
       <Footer />
     </div>
