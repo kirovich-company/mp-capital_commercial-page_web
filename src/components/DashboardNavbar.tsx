@@ -83,7 +83,7 @@ export function DashboardNavbar({ onNavigate, onLogout, userName = "Usuario" }: 
                   setIsOpen(false);
                 }}
                 variant="outline" 
-                className="border border-white/40 text-white hover:bg-white hover:text-black w-full px-6 py-2 tracking-[0.2em] text-xs transition-all duration-500 rounded-none"
+                className="border border-white/40 text-black hover:bg-white hover:text-black w-full px-6 py-2 tracking-[0.2em] text-xs transition-all duration-500 rounded-none"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 SALIR
