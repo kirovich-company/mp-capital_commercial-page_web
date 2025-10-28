@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "./ui/button";
 import { Building2, Menu, X } from "lucide-react";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface NavbarProps {
-  onNavigate?: (page: "home" | "about") => void;
+  onNavigate?: (page: "home" | "about" | "login") => void;
 }
 
 export function Navbar({ onNavigate }: NavbarProps) {
@@ -11,6 +14,15 @@ export function Navbar({ onNavigate }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [scrollDir, setScrollDir] = useState<"up" | "down">("up");
+
+  // Login overlay state
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginErrorEmail, setLoginErrorEmail] = useState<string>("");
+  const [loginErrorPassword, setLoginErrorPassword] = useState<string>("");
+  const [loginSubmitting, setLoginSubmitting] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState<string>("");
 
   useEffect(() => {
     let lastY = window.scrollY || 0;
@@ -28,12 +40,28 @@ export function Navbar({ onNavigate }: NavbarProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll and ESC to close when loginOpen
+  useEffect(() => {
+    if (loginOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setLoginOpen(false);
+      };
+      window.addEventListener("keydown", onKey);
+      return () => {
+        document.body.style.overflow = prev;
+        window.removeEventListener("keydown", onKey);
+      };
+    }
+  }, [loginOpen]);
+
   const progressRatio = Math.min(1, Math.max(0, scrollProgress / 100));
   const bgOpacity = 0.6 + 0.3 * progressRatio;
   const blurPx = 4 + 8 * progressRatio;
   const shadowOpacity = 0.15 + 0.25 * progressRatio;
 
-  const handleNavigation = (page: "home" | "about", sectionId?: string) => {
+  const handleNavigation = (page: "home" | "about" | "login", sectionId?: string) => {
     if (onNavigate) {
       onNavigate(page);
     }
@@ -53,6 +81,42 @@ export function Navbar({ onNavigate }: NavbarProps) {
     }
     setIsOpen(false);
   };
+
+  function validateEmail(value: string) {
+    return /.+@.+\..+/.test(value);
+  }
+
+  function validatePassword(value: string) {
+    return value.trim().length >= 6;
+  }
+
+  async function handleLoginSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoginErrorEmail("");
+    setLoginErrorPassword("");
+    setLoginSuccess("");
+
+    let hasError = false;
+    if (!validateEmail(loginEmail)) {
+      setLoginErrorEmail("Email inválido");
+      hasError = true;
+    }
+    if (!validatePassword(loginPassword)) {
+      setLoginErrorPassword("Mínimo 6 caracteres");
+      hasError = true;
+    }
+    if (hasError) return;
+
+    setLoginSubmitting(true);
+    try {
+      // Simular request (no endpoint real aún)
+      await new Promise((r) => setTimeout(r, 1000));
+      setLoginSuccess("Ingreso exitoso (demo)");
+      setTimeout(() => setLoginOpen(false), 700);
+    } finally {
+      setLoginSubmitting(false);
+    }
+  }
 
   return (
     <>
@@ -122,9 +186,10 @@ export function Navbar({ onNavigate }: NavbarProps) {
             >
               Nosotros
             </button>
-
             <Button 
               variant="outline" 
+              // onClick={() => (onNavigate ? onNavigate("login") : setLoginOpen(true))}
+              onClick={() => handleNavigation("login")}
               className="border border-white/40 text-black hover:bg-white/10 hover:border-white hover:text-white hover-gradient-soft btn-icon-white-hover px-8 py-2 tracking-[0.25em] text-xs transition-all duration-300 rounded-none transform hover:-translate-y-0.5 active:scale-95 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               PORTAL CLIENTES
@@ -168,7 +233,6 @@ export function Navbar({ onNavigate }: NavbarProps) {
               >
                 Inversiones
               </button>
-          
               <button 
                 onClick={() => handleNavigation("home", "contacto")}
                 className="text-white/70 hover:text-white transition-colors py-2 tracking-[0.2em] uppercase text-xs text-left"
@@ -183,6 +247,7 @@ export function Navbar({ onNavigate }: NavbarProps) {
               </button>
               <Button 
                 variant="outline" 
+                onClick={() => (onNavigate ? onNavigate("login") : setLoginOpen(true))}
                 className="border border-white/40 text-black hover:bg-white/10 hover:border-white hover:text-white hover-gradient-soft btn-icon-white-hover w-full px-8 py-2 tracking-[0.25em] text-xs transition-all duration-300 rounded-none transform hover:-translate-y-0.5 active:scale-95 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
                 PORTAL CLIENTES
@@ -192,6 +257,42 @@ export function Navbar({ onNavigate }: NavbarProps) {
         </div>
       </div>
     </nav>
+
+    {/* Login Overlay via Portal */}
+    {loginOpen && createPortal(
+      <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setLoginOpen(false)}>
+        <div className="w-[320px] sm:w-[360px] bg-white p-6 relative rounded-lg shadow-2xl ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
+          <button onClick={() => setLoginOpen(false)} className="absolute top-4 right-4 text-black/60 hover:text-black transition-colors" aria-label="Cerrar">
+            <X className="h-5 w-5" />
+          </button>
+          <div className="mb-4 flex items-center gap-2">
+            <Building2 className="h-5 w-5 text-black" />
+            <div className="text-black text-base tracking-wide">Portal Clientes</div>
+          </div>
+          <div className="text-black/60 text-sm mb-4">Inicia sesión para acceder a tu cuenta.</div>
+          <form onSubmit={handleLoginSubmit} className="space-y-4 text-black">
+            <div className="space-y-2">
+              <Label htmlFor="login-email" className="text-black/60 tracking-[0.15em] uppercase text-xs">Usuario*</Label>
+              <Input id="login-email" type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="Usuario" className="bg-white border text-black placeholder:text-black/40" />
+              {loginErrorEmail && <div className="text-red-600 text-xs">{loginErrorEmail}</div>}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="login-password" className="text-black/60 tracking-[0.15em] uppercase text-xs">Contraseña*</Label>
+              <Input id="login-password" type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} placeholder="Contraseña" className="bg-white border text-black placeholder:text-black/40" />
+              {loginErrorPassword && <div className="text-red-600 text-xs">{loginErrorPassword}</div>}
+            </div>
+            {loginSuccess && <div className="text-green-600 text-xs">{loginSuccess}</div>}
+            <div className="flex flex-col gap-3 pt-2">
+              <Button type="submit" disabled={loginSubmitting} className="bg-black text-white hover:bg-black/90 rounded-full tracking-[0.15em] py-5">
+                {loginSubmitting ? "Ingresando..." : "Ingresar"}
+              </Button>
+              <button type="button" onClick={() => alert('Recuperación (demo)')} className="text-center text-black/70 text-sm hover:underline">¿Olvidó su contraseña?</button>
+            </div>
+          </form>
+        </div>
+      </div>,
+      document.body,
+    )}
     </>
   );
 }
