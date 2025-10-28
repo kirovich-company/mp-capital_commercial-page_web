@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import { wrap } from "node:module";
 
 interface LoginFormProps {
   onNavigate?: (page: "home" | "about" | "login") => void;
@@ -19,7 +20,7 @@ export function LoginForm({ onNavigate, onLogin }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8" style={{ paddingLeft: '30%', paddingRight: '30%' }}>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4 sm:p-30 lg:px-8 lg:pl-12 lg:pr-12 lg:pt-1 lg:px-1" >
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-12">
@@ -125,6 +126,7 @@ export function LoginForm({ onNavigate, onLogin }: LoginFormProps) {
             <Button
               type="button"
               variant="outline"
+              style={{ whiteSpace: "wrap" }}
               className="w-full border border-white/30 text-black hover:bg-white/5 hover:border-white/50 tracking-[0.2em] py-6 transition-all duration-500 rounded-none"
             >
               ACCESO CON CERTIFICADO DIGITAL
